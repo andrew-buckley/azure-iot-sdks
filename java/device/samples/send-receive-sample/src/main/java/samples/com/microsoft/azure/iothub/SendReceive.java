@@ -120,7 +120,7 @@ public class SendReceive
         System.out.println("Starting...");
         System.out.println("Beginning setup.");
 
-        if (args.length <= 1 || args.length >= 4)
+        if (args.length <= 1/* || args.length >= 4*/)
         {
             System.out.format(
                     "Expected 2 or 3 arguments but received:\n%d. The program "
@@ -180,6 +180,18 @@ public class SendReceive
             }
         }
 
+        //TODO: Better check
+//        if(args.length >= 4){
+//            for(int i = 3; i<args.length; i++){
+//                String s = args[i];
+//                if(s.substring(0, 2).equals("-D")){
+//                    s = s.substring(2);
+//                    String split[] = s.split("=");
+//                    System.setProperty(split[0], split[1]);
+//                }
+//            }
+//        }
+
         System.out.println("Successfully read input parameters.");
         System.out.format("Using communication protocol %s.\n",
                 protocol.name());
@@ -227,7 +239,7 @@ public class SendReceive
                 {
                 }
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -16,6 +16,8 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -158,6 +160,14 @@ public final class DeviceClient
      */
     public void open() throws IOException
     {
+//        Properties env = System.getProperties();
+//        for(Object s : env.keySet()){
+//            System.out.println(s+": "+env.get(s));
+//        }
+
+        String s = System.getProperty("POLL_PERIOD");
+        long send_period = (s==null ? DEFAULT_SEND_PERIOD_MILLIS : Integer.valueOf(s));
+        System.out.println("Poll Period: "+send_period);
         // Codes_SRS_DEVICECLIENT_11_028: [If the client is already open, the function shall do nothing.]
         if (this.state == IotHubClientState.OPEN)
         {
@@ -177,7 +187,7 @@ public final class DeviceClient
         // will never overlap.
         // Codes_SRS_DEVICECLIENT_11_023: [The function shall schedule send tasks to run every 5000 milliseconds.]
         this.taskScheduler.scheduleAtFixedRate(sendTask, 0,
-                DEFAULT_SEND_PERIOD_MILLIS, TimeUnit.MILLISECONDS);
+                send_period, TimeUnit.MILLISECONDS);
         // Codes_SRS_DEVICECLIENT_11_024: [The function shall schedule receive tasks to run every 5000 milliseconds.]
         this.taskScheduler.scheduleAtFixedRate(receiveTask, 0,
                 current_receive_period_millis, TimeUnit.MILLISECONDS);
